@@ -14,7 +14,21 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT ?? 5000;
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+const allowedOrigins: string[] = [
+  'http://localhost:3000',
+];
+
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
+console.log('🔓 Дозволені origins:', allowedOrigins);
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
 app.use(express.json());
 app.use(passport.initialize());
 
@@ -27,10 +41,9 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', message: 'Tempo API працює' });
 });
 
-
 initDatabase().then(() => {
   app.listen(PORT, () => {
-    console.log(` Сервер запущено на http://localhost:${PORT}`);
+    console.log(`🚀 Сервер запущено на порту ${PORT}`);
     startScheduler();
   });
 });
