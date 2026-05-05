@@ -232,9 +232,12 @@ async function sendWeeklyReports(): Promise<void> {
         }
       }
 
-      const categoryStats = Object.values(catStatsMap)
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 5);
+      const catList: { label: string; color: string; count: number }[] = [];
+            for (const key in catStatsMap) {
+              catList.push(catStatsMap[key]);
+            }
+            catList.sort((a, b) => b.count - a.count);
+            const categoryStats = catList.slice(0, 5);
 
       const ok = await sendWeeklyReport(user.email, user.name, {
         totalTasks,
