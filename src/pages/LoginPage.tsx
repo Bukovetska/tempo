@@ -6,6 +6,9 @@ interface LoginPageProps {
   onRegister: (name: string, email: string, password: string) => Promise<string | null>;
 }
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const GOOGLE_AUTH_URL = API_URL.replace('/api', '') + '/api/auth/google';
+
 export default function LoginPage({ onLogin, onRegister }: LoginPageProps) {
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [showForgot, setShowForgot] = useState<boolean>(false);
@@ -175,7 +178,7 @@ export default function LoginPage({ onLogin, onRegister }: LoginPageProps) {
           <button
             className="btn-secondary"
             style={{ width: '100%', padding: '10px' }}
-            onClick={() => { window.location.href = 'http://localhost:5000/api/auth/google'; }}
+            onClick={() => { window.location.href = GOOGLE_AUTH_URL; }}
           >
             Продовжити з Google
           </button>

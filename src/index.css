@@ -12,7 +12,6 @@ body {
   color: #2e2640;
 }
 
-/* ===== layout ===== */
 
 .app-layout {
   display: flex;
@@ -52,8 +51,6 @@ body {
   letter-spacing: 0.07em;
   margin-bottom: 12px;
 }
-
-/* ===== sidebar ===== */
 
 .sidebar {
   width: 220px;
@@ -141,16 +138,12 @@ body {
   z-index: 999;
 }
 
-/* ===== card ===== */
-
 .card {
   background: #fff;
   border-radius: 16px;
   padding: 16px;
   box-shadow: 0 2px 12px rgba(139, 114, 190, 0.08);
 }
-
-/* ===== buttons ===== */
 
 .btn-primary {
   background: #8b72be;
@@ -197,8 +190,6 @@ body {
   cursor: pointer;
   font-family: inherit;
 }
-
-/* ===== inputs ===== */
 
 .input {
   width: 100%;
@@ -262,8 +253,6 @@ body {
   margin-top: 4px;
 }
 
-/* ===== reminder banner ===== */
-
 .reminder-banner {
   background: #ede5fc;
   border-radius: 12px;
@@ -273,7 +262,6 @@ body {
   margin-bottom: 14px;
 }
 
-/* ===== progress ===== */
 
 .progress-track {
   height: 8px;
@@ -288,8 +276,6 @@ body {
   border-radius: 99px;
   transition: width 0.3s;
 }
-
-/* ===== task item ===== */
 
 .task-item {
   display: flex;
@@ -348,8 +334,6 @@ body {
   margin-top: 2px;
 }
 
-/* ===== badges ===== */
-
 .badge {
   font-size: 10px;
   font-weight: 700;
@@ -372,8 +356,6 @@ body {
   background: #e8f0e8;
   color: #6a8b6a;
 }
-
-/* ===== toggle ===== */
 
 .toggle {
   width: 38px;
@@ -405,8 +387,6 @@ body {
 .toggle.on .toggle-thumb {
   left: 19px;
 }
-
-/* ===== modals ===== */
 
 .modal-overlay {
   position: fixed;
@@ -459,8 +439,6 @@ body {
   cursor: pointer;
 }
 
-/* ===== forms ===== */
-
 .form-grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -489,8 +467,6 @@ body {
   gap: 8px;
 }
 
-/* ===== empty state ===== */
-
 .empty-state {
   text-align: center;
   padding: 40px 0;
@@ -501,8 +477,6 @@ body {
   font-size: 32px;
   margin-bottom: 8px;
 }
-
-/* ===== conflict modal ===== */
 
 .conflict-icon-wrapper {
   text-align: center;
@@ -564,8 +538,6 @@ body {
   margin-bottom: 16px;
 }
 
-/* ===== analytics stats ===== */
-
 .stats-grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -617,8 +589,6 @@ body {
   font-size: 11px;
   color: #b0a0c8;
 }
-
-/* ===== dropdown ===== */
 
 .dropdown-button {
   border: 1px solid #ddd5f0;
@@ -678,8 +648,6 @@ body {
 .date-input-wrapper .input {
   width: 140px;
 }
-
-/* ===== bar chart ===== */
 
 .bar-chart-container {
   position: relative;
@@ -776,8 +744,6 @@ body {
   color: #c0b4d8;
 }
 
-/* ===== donut ===== */
-
 .donut-row {
   display: flex;
   align-items: center;
@@ -834,8 +800,6 @@ body {
   margin-left: 2px;
 }
 
-/* ===== empty chart ===== */
-
 .empty-chart {
   display: flex;
   align-items: center;
@@ -859,8 +823,6 @@ body {
   gap: 12px;
   margin-bottom: 14px;
 }
-
-/* ===== calendar ===== */
 
 .calendar-grid {
   display: grid;
@@ -916,8 +878,6 @@ body {
   color: #b0a0c8;
   margin-top: 2px;
 }
-
-/* ===== month nav ===== */
 
 .month-nav {
   display: flex;
@@ -984,8 +944,6 @@ body {
   height: 6px;
   border-radius: 3px;
 }
-
-/* ===== settings ===== */
 
 .settings-grid {
   display: grid;
@@ -1094,8 +1052,6 @@ body {
   font-family: inherit;
 }
 
-/* ===== category select add block ===== */
-
 .add-category-block {
   margin-top: 8px;
   padding: 10px 12px;
@@ -1110,8 +1066,6 @@ body {
   color: #8b72be;
   margin-bottom: 6px;
 }
-
-/* ===== month stats ===== */
 
 .month-stats {
   display: grid;
@@ -1174,7 +1128,39 @@ body {
   text-align: center;
 }
 
-/* ===== mobile ===== */
+.login-page {
+  display: flex;
+  min-height: 100vh;
+  background: #faf7ff;
+}
+
+.login-brand {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px;
+  background: linear-gradient(135deg, #ede5fc 0%, #c4b0e0 100%);
+}
+
+.login-form-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(139, 114, 190, 0.12);
+}
 
 @media (max-width: 768px) {
   .burger-button {
@@ -1219,4 +1205,20 @@ body {
   .form-grid-2 {
     grid-template-columns: 1fr;
   }
+  .login-page {
+  flex-direction: column;
+}
+
+.login-brand {
+  padding: 32px 20px;
+  min-height: 200px;
+}
+
+.login-form-wrap {
+  padding: 24px 16px;
+}
+
+.login-form {
+  padding: 24px;
+}
 }
