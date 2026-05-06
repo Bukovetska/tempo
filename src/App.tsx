@@ -9,6 +9,7 @@ import SettingsPage     from './pages/SettingsPage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
 import { User, UserSettings } from './types';
 
+
 const ACTIVE_PAGE_KEY = 'tempo_active_page';
 
 function getInitialPage(): Page {
@@ -30,7 +31,7 @@ export default function App() {
 
   const user = currentUser ?? auth.user;
 
-  const isCallback = window.location.pathname.includes('/auth/callback') ||
+  const isCallback = window.location.pathname === '/auth/callback' ||
                    window.location.href.includes('/auth/callback');
 
   if (isCallback) {
@@ -50,8 +51,7 @@ export default function App() {
             createdAt: new Date().toISOString()
           };
           loginWithToken(token, fullUser);
-          const baseUrl = process.env.PUBLIC_URL || '/';
-          window.location.href = baseUrl;
+          window.location.href = '/';
         }}
       />
     );

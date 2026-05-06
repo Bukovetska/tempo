@@ -10,18 +10,16 @@ export default function AuthCallbackPage({ onSuccess }: AuthCallbackPageProps) {
     const token  = params.get('token');
     const user   = params.get('user');
 
-    const baseUrl = process.env.PUBLIC_URL || '/';
-
     if (token && user) {
       try {
         const parsedUser = JSON.parse(decodeURIComponent(user));
         onSuccess(token, parsedUser);
-        window.history.replaceState({}, '', baseUrl);
+        window.history.replaceState({}, '', '/');
       } catch {
-        window.location.href = baseUrl;
+        window.location.href = '/';
       }
     } else {
-      window.location.href = baseUrl;
+      window.location.href = '/';
     }
   }, []);
 

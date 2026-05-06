@@ -2,27 +2,42 @@ import { Response } from 'express';
 import pool from '../db/pool';
 import { AuthRequest } from '../middleware/auth';
 
+async function getUserTimezone(userId: string): Promise<string> {
+  const result = await pool.query(
+    'SELECT timezone FROM users WHERE id = $1',
+    [userId]
+  );
+  return result.rows[0]?.timezone || 'Europe/Kyiv';
+}
+
 export async function getTasks(req: AuthRequest, res: Response): Promise<void> {
   const { date } = req.query as { date?: string };
 
   try {
-    const userResult = await pool.query(
-      'SELECT timezone FROM users WHERE id = $1',
-      [req.userId]
-    );
-    const userTz = userResult.rows[0]?.timezone || 'Europe/Kyiv';
+    const userTz = await getUserTimezone(req.userId!);
 
     let query = `
-      SELECT t.*, c.label as category_label, c.color as category_color
+      SELECT
+        t.id,
+        t.user_id,
+        t.title,
+        t.description,
+        t.category,
+        t.priority,
+        TO_CHAR(t.scheduled_at AT TIME ZONE $1, 'YYYY-MM-DD"T"HH24:MI:SS') as scheduled_at,
+        t.is_completed,
+        t.completed_at,
+        t.estimated_time,
+        c.label as category_label,
+        c.color as category_color
       FROM tasks t
       LEFT JOIN categories c ON t.category = c.id
-      WHERE t.user_id = $1
+      WHERE t.user_id = $2
     `;
-    const params: string[] = [req.userId!];
+    const params: string[] = [userTz, req.userId!];
 
     if (date) {
-      query += ` AND DATE(scheduled_at AT TIME ZONE $2) = $3`;
-      params.push(userTz);
+      query += ` AND DATE(t.scheduled_at AT TIME ZONE $1) = $3`;
       params.push(date);
     }
 
@@ -69,13 +84,14 @@ export async function createTask(req: AuthRequest, res: Response): Promise<void>
   }
 
   try {
+    const userTz = await getUserTimezone(req.userId!);
     const id = `t_${Date.now()}`;
 
     await pool.query(
       `INSERT INTO tasks
         (id, user_id, title, description, category, priority, scheduled_at, estimated_time)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-      [id, req.userId, title, description ?? '', category, priority, scheduledAt, estimatedTime ?? 30]
+       VALUES ($1, $2, $3, $4, $5, $6, ($7::timestamp AT TIME ZONE $8), $9)`,
+      [id, req.userId, title, description ?? '', category, priority, scheduledAt, userTz, estimatedTime ?? 30]
     );
 
     res.status(201).json({ id, message: 'Завдання створено' });
@@ -99,6 +115,8 @@ export async function updateTask(req: AuthRequest, res: Response): Promise<void>
     };
 
   try {
+    const userTz = await getUserTimezone(req.userId!);
+
     await pool.query(
       `UPDATE tasks SET
         is_completed   = COALESCE($1, is_completed),
@@ -107,12 +125,12 @@ export async function updateTask(req: AuthRequest, res: Response): Promise<void>
         description    = COALESCE($3, description),
         category       = COALESCE($4, category),
         priority       = COALESCE($5, priority),
-        scheduled_at   = COALESCE($6, scheduled_at),
-        estimated_time = COALESCE($7, estimated_time)
-       WHERE id = $8 AND user_id = $9`,
+        scheduled_at   = COALESCE(($6::timestamp AT TIME ZONE $7), scheduled_at),
+        estimated_time = COALESCE($8, estimated_time)
+       WHERE id = $9 AND user_id = $10`,
       [isCompleted ?? null, title ?? null, description ?? null,
        category ?? null, priority ?? null, scheduledAt ?? null,
-       estimatedTime ?? null, id, req.userId]
+       userTz, estimatedTime ?? null, id, req.userId]
     );
     if (scheduledAt) {
       await pool.query(
