@@ -5,7 +5,7 @@ interface ForgotPasswordPageProps {
 }
 type Step = 'email' | 'code';
 
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) {
   const [step, setStep]                 = useState<Step>('email');
