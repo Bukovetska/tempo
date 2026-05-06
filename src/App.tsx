@@ -9,12 +9,8 @@ import SettingsPage     from './pages/SettingsPage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
 import { User, UserSettings } from './types';
 
-// ключ під яким зберігаємо активну сторінку в localStorage
-// зберігаємо лише назву поточної сторінки щоб після F5 юзер не вертався на День
 const ACTIVE_PAGE_KEY = 'tempo_active_page';
 
-// допоміжна функція - читаємо збережену сторінку з localStorage
-// якщо нічого не збережено або зіпсуте значення - повертаємо 'day' за замовчуванням
 function getInitialPage(): Page {
   const saved = localStorage.getItem(ACTIVE_PAGE_KEY);
   if (saved === 'day' || saved === 'month' || saved === 'analytics' || saved === 'settings') {
@@ -28,15 +24,13 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>(getInitialPage);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  // зберігаємо вибір сторінки коли він міняється
-  // useEffect спрацьовує щоразу як currentPage оновлюється
   useEffect(() => {
     localStorage.setItem(ACTIVE_PAGE_KEY, currentPage);
   }, [currentPage]);
 
   const user = currentUser ?? auth.user;
 
-  const isCallback = window.location.pathname === '/auth/callback' ||
+  const isCallback = window.location.pathname.includes('/auth/callback') ||
                    window.location.href.includes('/auth/callback');
 
   if (isCallback) {
@@ -56,7 +50,8 @@ export default function App() {
             createdAt: new Date().toISOString()
           };
           loginWithToken(token, fullUser);
-          window.location.href = '/';
+          const baseUrl = process.env.PUBLIC_URL || '/';
+          window.location.href = baseUrl;
         }}
       />
     );
@@ -70,8 +65,6 @@ export default function App() {
     setCurrentUser(updated);
   }
 
-  // обгортаємо logout щоб ще видаляти збережену сторінку
-  // інакше при наступному вході юзер відразу попаде на ту що останньо була
   function handleLogout(): void {
     localStorage.removeItem(ACTIVE_PAGE_KEY);
     logout();
@@ -91,7 +84,6 @@ export default function App() {
     if (currentPage === 'settings') {
       return <SettingsPage user={user} onLogout={handleLogout} onUpdate={handleUpdate} />;
     }
-    // якщо щось дивне - показуємо День
     return <DayPage userId={user.id} />;
   }
 
