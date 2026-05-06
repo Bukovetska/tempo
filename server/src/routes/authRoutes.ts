@@ -11,6 +11,7 @@ router.post('/login', login);
 
 router.post('/forgot-password', requestResetCode);
 router.post('/reset-password', resetPassword);
+
 router.get('/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
@@ -32,7 +33,12 @@ router.get('/google/callback',
       email: user.email,
     }));
 
-    res.redirect(`http://localhost:3000/auth/callback?token=${token}&user=${userData}`);
+    let redirectBase = 'http://localhost:3000';
+    if (process.env.FRONTEND_URL) {
+      redirectBase = process.env.FRONTEND_URL + '/tempo';
+    }
+
+    res.redirect(`${redirectBase}/auth/callback?token=${token}&user=${userData}`);
   }
 );
 
