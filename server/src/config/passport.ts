@@ -6,12 +6,16 @@ import { createDefaultCategories } from '../controllers/authController';
 
 dotenv.config();
 
+const callbackURL = (process.env.BACKEND_URL ?? 'http://localhost:5000') + '/api/auth/google/callback';
+console.log('🔗 Google OAuth callback URL:', callbackURL);
+console.log('🔍 BACKEND_URL env:', process.env.BACKEND_URL);
+
 passport.use(
   new GoogleStrategy(
     {
       clientID:     process.env.GOOGLE_CLIENT_ID ?? '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
-      callbackURL:  'http://localhost:5000/api/auth/google/callback',
+      callbackURL:  callbackURL,
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
