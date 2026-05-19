@@ -33,7 +33,7 @@ export async function sendTaskReminder(
       </div>
       <div style="background: #f4f0fc; padding: 24px; border-radius: 0 0 12px 12px;">
         <p style="font-size: 16px; color: #2e2640;">Привіт, ${userName}!</p>
-        <p style="font-size: 14px; color: #4a3a60;">Нагадуємо що скоро у тебе задача:</p>
+        <p style="font-size: 14px; color: #4a3a60;">Нагадуємо що скоро у Вас задача:</p>
         <div style="background: white; padding: 16px; border-radius: 10px; border-left: 4px solid #8b72be; margin: 16px 0;">
           <p style="font-weight: bold; font-size: 16px; color: #2e2640; margin: 0;">${taskTitle}</p>
           <p style="color: #8b72be; font-size: 13px; margin-top: 6px;">🕐 ${taskTime}</p>
@@ -83,10 +83,10 @@ export async function sendDailySummary(
   }
 
   let motivation = '';
-  if (percent >= 80) motivation = '🎉 Чудовий день! Так тримати!';
-  else if (percent >= 50) motivation = '👍 Непоганий результат, завтра буде краще!';
-  else if (percent > 0) motivation = '💪 Завтра новий день - ще все вийде!';
-  else motivation = '🌱 Не вийшло сьогодні - вийде завтра.';
+  if (percent >= 80) motivation = 'Чудовий день! Так тримати!';
+  else if (percent >= 50) motivation = 'Непоганий результат, завтра буде краще!';
+  else if (percent > 0) motivation = 'Завтра новий день - ще все вийде!';
+  else motivation = 'Не вийшло сьогодні - вийде завтра.';
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
@@ -141,7 +141,7 @@ export async function sendResetCode(email: string, code: string): Promise<boolea
       </div>
       <div style="background: #f4f0fc; padding: 24px; border-radius: 0 0 12px 12px;">
         <p style="font-size: 14px; color: #4a3a60;">
-          Хтось (можливо ти) запросив скидання паролю до Tempo акаунту.
+          Хтось запросив скидання паролю до Tempo акаунту.
         </p>
         <p style="font-size: 14px; color: #4a3a60; margin-top: 8px;">Ось твій код:</p>
 
@@ -150,11 +150,11 @@ export async function sendResetCode(email: string, code: string): Promise<boolea
         </div>
 
         <p style="font-size: 13px; color: #6a5a80;">
-          Введи цей код у формі скидання паролю. Код дійсний <strong>15 хвилин</strong>.
+          Введіть цей код у формі скидання паролю. Код дійсний <strong>15 хвилин</strong>.
         </p>
 
         <p style="font-size: 12px; color: #b0a0c8; margin-top: 20px; padding: 12px; background: #ede5fc; border-radius: 8px;">
-          ⚠️ Якщо це не ти запросив скидання — просто проігноруй цей лист.
+          ⚠️ Якщо це не Ви запросив скидання — просто проігноруйте цей лист.
         </p>
 
         <p style="font-size: 12px; color: #b0a0c8; text-align: center; margin-top: 20px;">

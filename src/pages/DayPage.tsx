@@ -67,19 +67,19 @@ export default function DayPage({ userId }: DayPageProps) {
   });
 
   useEffect(() => {
-    loadTasks();
+    loadTasks(true);
   }, []);
 
-  async function loadTasks(): Promise<void> {
-    try {
-      setLoading(true);
-      const data = await apiFetchTasks(TODAY);
-      setTasks(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+  async function loadTasks(showLoader: boolean = false): Promise<void> {
+  try {
+    if (showLoader) setLoading(true);
+    const data = await apiFetchTasks(TODAY);
+    setTasks(data);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    if (showLoader) setLoading(false);
+  }
   }
 
   async function handleToggle(taskId: string): Promise<void> {

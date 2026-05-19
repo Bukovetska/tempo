@@ -17,8 +17,14 @@ const DEFAULT_CATS = ['work', 'study', 'personal', 'health'];
 
 export default function SettingsPage({ user, onLogout, onUpdate }: SettingsPageProps) {
   const [name, setName]         = useState<string>(user.name);
-  const [timezone, setTimezone] = useState<string>(user.settings.timezone);
-  const [settings, setSettings] = useState<UserSettings>(user.settings);
+  const initialSettings: UserSettings = user.settings || {
+    timezone: 'Europe/Kyiv',
+    notificationsEnabled: true,
+    weeklyReportEnabled: false,
+    dailySummaryEnabled: true,
+  };
+  const [timezone, setTimezone] = useState<string>(initialSettings.timezone);
+  const [settings, setSettings] = useState<UserSettings>(initialSettings);
   const [saved, setSaved]       = useState<boolean>(false);
   const [saving, setSaving]     = useState<boolean>(false);
   const [error, setError]       = useState<string>('');
