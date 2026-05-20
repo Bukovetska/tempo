@@ -26,15 +26,17 @@ passport.use(
         );
 
         if (existing.rows.length > 0) {
+          const user = existing.rows[0]; 
+
           const catCheck = await pool.query(
-            `SELECT COUNT(*) FROM categories
-             WHERE user_id = $1 AND id IN ('work', 'study', 'personal', 'health')`,
-            [existing.rows[0].id]
+            `SELECT COUNT(*) FROM categories WHERE user_id = $1`,
+            [user.id] 
           );
+
           if (Number(catCheck.rows[0].count) < 4) {
-            await createDefaultCategories(existing.rows[0].id);
+            await createDefaultCategories(user.id);
           }
-          return done(null, existing.rows[0]);
+          return done(null, user);
         }
 
         const id = `u_${Date.now()}`;

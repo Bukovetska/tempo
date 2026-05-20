@@ -8,22 +8,23 @@ dotenv.config();
 
 async function createDefaultCategories(userId: string): Promise<void> {
   const defaults = [
-    { id: 'work',     label: 'Робота',    color: '#8b72be' },
-    { id: 'study',    label: 'Навчання',  color: '#c07090' },
-    { id: 'personal', label: 'Особисте',  color: '#c8a84b' },
-    { id: 'health',   label: "Здоров'я",  color: '#7aab8e' },
+    { key: 'work',     label: 'Робота',    color: '#8b72be' },
+    { key: 'study',    label: 'Навчання',  color: '#c07090' },
+    { key: 'personal', label: 'Особисте',  color: '#c8a84b' },
+    { key: 'health',   label: "Здоров'я",  color: '#7aab8e' },
   ];
-  for (let i = 0; i < defaults.length; i++) {
-    const cat = defaults[i];
+
+  for (const item of defaults) {
+    const uniqueCatId = `${item.key}_${userId}`; 
+
     await pool.query(
       `INSERT INTO categories (id, user_id, label, color)
        VALUES ($1, $2, $3, $4)
        ON CONFLICT (id) DO NOTHING`,
-      [cat.id, userId, cat.label, cat.color]
+      [uniqueCatId, userId, item.label, item.color]
     );
   }
 }
-
 export async function register(req: Request, res: Response): Promise<void> {
   const { name, email, password } = req.body as {
     name: string;
@@ -103,8 +104,7 @@ export async function login(req: Request, res: Response): Promise<void> {
       return;
     }
     const catCheck = await pool.query(
-      `SELECT COUNT(*) FROM categories
-       WHERE user_id = $1 AND id IN ('work', 'study', 'personal', 'health')`,
+      `SELECT COUNT(*) FROM categories WHERE user_id = $1`,
       [user.id]
     );
     if (Number(catCheck.rows[0].count) < 4) {

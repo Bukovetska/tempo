@@ -3,8 +3,6 @@ import pool from '../db/pool';
 import { sendTaskReminder, sendDailySummary, sendWeeklyReport } from './emailService';
 
 async function checkAndSendReminders(): Promise<void> {
-  console.log('🔍 Перевірка нагадувань...', new Date().toISOString());
-
   try {
     const result = await pool.query(`
       SELECT
